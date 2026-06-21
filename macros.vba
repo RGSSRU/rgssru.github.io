@@ -1,6 +1,11 @@
 Option Explicit
 Option Base 1
-
+' Проверка размера слепка
+MsgBox "Слепок создан!" & vbCrLf & _
+       "Всего строк: " & UBound(snapshotData, 1) & vbCrLf & _
+       "Всего столбцов: " & UBound(snapshotData, 2) & vbCrLf & _
+       "Количество файлов: " & allFilesData.Count, _
+       vbInformation, "Размер слепка"
 ' ==========================================
 ' НАСТРОЙКИ (меняете под себя!)
 ' ==========================================
