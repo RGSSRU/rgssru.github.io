@@ -6,6 +6,31 @@ For Each file In folder.Files
         Set wb = Workbooks.Open(file.Path, ReadOnly:=True, UpdateLinks:=False)
         Set ws = wb.Sheets(1)
         
+        ' Находим последнюю строку
+        Dim lastRow As Long
+        lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+        
+        If lastRow > 1 Then
+            ' Есть данные - читаем
+            Dim lastCol As Long
+            lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+            fileData = ws.Range(ws.Cells(2, 1), ws.Cells(lastRow, lastCol)).Value
+            
+            allFilesData.Add fileData
+            totalRows = totalRows + UBound(fileData, 1)
+            If UBound(fileData, 2) > maxCols Then maxCols = UBound(fileData, 2)
+        End If
+        
+        ' Закрываем файл (в любом случае)
+        wb.Close SaveChanges:=False
+    End If
+Next file
+
+For Each file In folder.Files
+    If LCase(Right(file.Name, 5)) = ".xlsx" Then
+        Set wb = Workbooks.Open(file.Path, ReadOnly:=True, UpdateLinks:=False)
+        Set ws = wb.Sheets(1)
+        
         ' НАХОДИМ ПОСЛЕДНЮЮ СТРОКУ В СТОЛБЦЕ A
         Dim lastRow As Long
         lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
