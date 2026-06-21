@@ -689,15 +689,19 @@ ErrorHandler:
 End Function
 
 ' --- Преобразование буквы столбца в номер ---
-Function ColumnLetterToNumber(colLetter As String) As Long
+Function ColumnLetterToNumber(ByVal colLetter As Variant) As Long
     Dim result As Long
     Dim i As Long
     Dim letter As String
+    Dim text As String
     
-    colLetter = UCase(Trim(colLetter))
+    ' Преобразуем в строку
+    text = CStr(colLetter)
+    text = UCase(Trim(text))
+    
     result = 0
-    For i = 1 To Len(colLetter)
-        letter = Mid(colLetter, i, 1)
+    For i = 1 To Len(text)
+        letter = Mid(text, i, 1)
         result = result * 26 + (Asc(letter) - 64)
     Next i
     
