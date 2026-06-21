@@ -1,5 +1,6 @@
 Option Explicit
 Option Base 1
+If Not IsEmpty(snapshotData(i, 1)) And Trim(CStr(snapshotData(i, 1))) <> "" Then
 ' Проверка размера слепка
 MsgBox "Слепок создан!" & vbCrLf & _
        "Всего строк: " & UBound(snapshotData, 1) & vbCrLf & _
