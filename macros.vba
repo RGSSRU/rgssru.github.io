@@ -1,5 +1,32 @@
 Option Explicit
 Option Base 1
+
+For Each file In folder.Files
+    If LCase(Right(file.Name, 5)) = ".xlsx" Then
+        Set wb = Workbooks.Open(file.Path, ReadOnly:=True, UpdateLinks:=False)
+        Set ws = wb.Sheets(1)
+        
+        ' НАХОДИМ ПОСЛЕДНЮЮ СТРОКУ В СТОЛБЦЕ A
+        Dim lastRow As Long
+        lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+        
+        ' Если есть данные
+        If lastRow > 1 Then  ' Если больше 1, значит есть данные
+            ' Читаем только реальные данные
+            fileData = ws.Range(ws.Cells(1, 1), ws.Cells(lastRow, ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column)).Value
+        Else
+            ' Если только заголовок или пусто
+            wb.Close SaveChanges:=False
+            GoTo NextFile
+        End If
+        
+        allFilesData.Add fileData
+        totalRows = totalRows + UBound(fileData, 1)
+        If UBound(fileData, 2) > maxCols Then maxCols = UBound(fileData, 2)
+        
+        wb.Close SaveChanges:=False
+    End If
+
 If Not IsEmpty(snapshotData(i, 1)) And Trim(CStr(snapshotData(i, 1))) <> "" Then
 ' Проверка размера слепка
 MsgBox "Слепок создан!" & vbCrLf & _
